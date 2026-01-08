@@ -3,7 +3,7 @@ A student project focusing on memory forensics analysis using Volatility and PES
 
 **Project Description**
 
-This project performs a memory forensics investigation on a captured RAM image to identify suspicious processes and potential malware. The analysis focuses on detecting anomalous behavior in memory, extracting suspicious binaries, and performing static malware analysis to identify indicators of compromise.\
+This project performs a memory forensics investigation on a captured RAM image to identify suspicious processes and potential malware. The analysis focuses on detecting anomalous behavior in memory, extracting suspicious binaries, and performing static malware analysis to identify indicators of compromise.
 
 The project was conducted as part of the Ethical Hacking course and emphasizes transparency, documentation, and forensic methodology.
 
@@ -23,7 +23,7 @@ Ensure transparency when using AI-assisted tools.
 The scope of this project is limited to:\
 Memory analysis of a provided RAM image.\
 Static malware analysis only (no execution of malware).\
-Educational and controlled lab environment.\
+Educational and controlled lab environment.
 
 The project does not include live incident response, dynamic malware execution, or analysis of real-world production systems.
 
@@ -33,21 +33,21 @@ Volatility Framework – memory analysis and process enumeration.\
 PEStudio – static analysis of extracted executables.\
 YARA – creation of malware detection rules.\
 LM Studio (google/gemma-3-12b) – AI assistance for drafting YARA rules and summarizing findings.\
-GitHub – version control and documentation.\
+GitHub – version control and documentation.
 
 All AI-assisted results were manually reviewed and validated.
 
 **Repository Structure**
 
 .
-├── README.md
-├── logs/
-│   └── volatility_results.txt
-├── rules/
-│   └── malware_detection.yar
-├── prompts/
-│   └── llm_yara_prompts.txt
-└── extracted/
+├── README.md\
+├── logs/\
+│   └── volatility_results.txt\
+├── rules/\
+│   └── malware_detection.yar\
+├── prompts/\
+│   └── llm_yara_prompts.txt\
+└── extracted/\
     └── suspicious_binary.exe
 
 **Installation & Environment**
@@ -55,7 +55,7 @@ All AI-assisted results were manually reviewed and validated.
 
 **Methodology**
 
-The analysis followed a structured forensic workflow:\
+The analysis followed a structured forensic workflow:
 
 1. Identification of the correct memory profile\
 2. Enumeration of running processes and system artifacts\
@@ -74,7 +74,7 @@ Hidden or terminated processes\
 The memory analysis revealed one or more suspicious processes exhibiting abnormal characteristics. Indicators observed during analysis included:\
 Unexpected process behavior\
 Suspicious memory regions\
-Abnormal imports and strings within extracted binaries\
+Abnormal imports and strings within extracted binaries
 
 Static analysis of extracted files indicated characteristics commonly associated with malicious software. Detailed logs and artifacts are available in the repository.
 
@@ -84,20 +84,20 @@ The following types of IoCs were identified during the investigation:\
 Suspicious process names\
 Unique strings found within extracted binaries\
 Abnormal imported functions\
-Indicators of packing or obfuscation\
+Indicators of packing or obfuscation
 
 These indicators were used as the basis for YARA rule development.
 
 **YARA Rules**
 
 Custom YARA rules were created to detect malware samples exhibiting similar characteristics to those identified during the analysis.\
-Location: rules/malware_detection.yar\
+Location: rules/malware_detection.yar
 
-Rule logic based on:\
+Rule logic based on:
 
 Unique strings\
 PE file characteristics\
-Verified forensic indicators\
+Verified forensic indicators
 
 The rules are intended for educational and detection purposes in controlled environments.
 
@@ -105,14 +105,14 @@ The rules are intended for educational and detection purposes in controlled envi
 
 An LLM (google/gemma-3-12b via LM Studio) was used to assist with:\
 Drafting YARA rule structures\
-Summarizing malware behavior\
+Summarizing malware behavior
 
 Transparency measures taken:\
 All AI-generated output was treated as untrusted\
-Manual verification was performed for all findings\
+Manual verification was performed for all findings
 
 Prompts and outputs are documented in:\
-prompts/llm_yara_prompts.txt\
+prompts/llm_yara_prompts.txt
 
 This ensures reproducibility and compliance with course requirements.
 
