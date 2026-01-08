@@ -2,3 +2,343 @@ README AI promts
 
 Vi har ett projektarbete med denna instruktionen: Projektval Ni kan välja ett av de förslag som tillhandahålls i kursen, eller komma med ett eget projektförslag. Om ni väljer att ta fram ett eget projekt ska ni: Skriva en kort beskrivning i samma stil som de färdiga förslagen (en template finns bland projektförslagen). Lämna in den till Jonny för godkännande innan ni börjar arbeta. Krav Projektet måste innehålla en praktisk del, till exempel installation, konfigurering, testning eller implementation av ett eget system eller verktyg. Projektet ska läggas upp på GitHub, tillsammans med dokumentation (README-fil, installationsinstruktioner och eventuella källfiler). Verktygslistan som tillhandahålls i kursen ska ses som förslag, inte krav. Ni får gärna använda andra verktyg om det passar ert projekt bättre. Om ni använder AI i ert arbete överväg att använda lokalt körda lösningar som Ollama eller LM Studio framför molnbaserade tjänster som ChatGPT. Observera: ChatGPT är mycket begränsad i säkerhetsrelaterade uppgifter och rekommenderas därför inte för dessa delar. Handledningen Jag kommer boka in handledningstillfällen, där ni som grupp kan boka en egen tid för att diskutera ert projekt. Presentation och demonstration Varje grupp ska hålla en presentation och demo på 10–12 minuter. Under presentationen ska ni: Visa upp det praktiska resultatet. Förklara ert tillvägagångssätt och vilka utmaningar ni stött på. Alla gruppmedlemmar ska delta aktivt. Gruppindelning Grupperna ska bestå av 3–4 studenter. Ni ansvarar själva för att organisera ert samarbete och dokumentera vem som bidragit med vad. det projekt vi har gjort är bifogad. Vad ska vara med i våran README fil? Detta har vi skrivit än sålänge Memory-forensics A memory forensics analysis using Volatility and PEStudio made by students Memory Forensics & Malware Analysis Project Description The purpose of this project is to perform memory analysis on a captured RAM image to detect suspicious processes and to analyze potential malware components. Objectives The main objectives of this project are: Enumerate running processes from a memory dump using Volatility. Identify suspicious or abnormal processes based on forensic indicators. Extract and analyze suspicious binaries from memory. Analyze extracted binaries using PEStudio to identify indicators of compromise. Create YARA rules to detect similar malware in future analyses. Document findings and ensure transparency when using AI-assisted tools. Tools Used The following tools were used during the analysis: Volatility - for memory analysis and process enumeration. PEStudio - for static analysis of extracted executables. LLM studio google/gemma-3-12b AI - used to assist in drafting YARA rules and summarizing findings, with all results manually verified. Repository Structure Conclusion Kan du ge oss resten och om något fattas.
 
+Prompts in order: 
+
+Prompt 1: 
+
+Using the following information from PEStudio, create a YARA rule that detects this malware.  
+
+Focus on unique strings, imports, and section names. Avoid overly generic indicators. 
+
+ 
+
+Answer 1: 
+
+Okay, please provide me with the PEStudio report or relevant data about the malware. I need the information to craft a specific and effective YARA rule. I'll be looking for things like: 
+
+Unique Strings: Unusual or uncommon strings within the binary. 
+
+Imports: Specific API calls that are used in an unusual way or are rare. 
+
+Section Names: Section names that deviate from standard conventions. 
+
+Other Indicators: Any other distinctive characteristics you can point out (e.g., specific constants, code patterns). 
+
+Once you give me the data, I'll do my best to create a YARA rule tailored to detect it while minimizing false positives. I'm ready when you are! 
+
+ 
+
+Prompt 2: 
+
+The first five screenshots from PE Studio were uploaded. 
+
+ 
+
+ 
+
+ 
+
+Answer 2: 
+
+Okay, thanks for the detailed PEStudio report. Let's analyze this and craft a YARA rule. Here's what I've observed: 
+
+Key Observations & Potential Indicators: 
+
+Section Names: The sections .text, .rdata, and .data are standard, but their sizes and virtual addresses might be useful for more advanced analysis (not directly in the initial rule). 
+
+Imports: A large number of imports from kernel32.dll, user32.dll, advapi32.dll, and powrprof.dll are expected, so we need to focus on specific combinations or unusual usage. The presence of PowerWriteDCValueIndex is interesting as it's related to power management manipulation which can be a sign of malicious activity. 
+
+Strings: The strings list is extensive, but some stand out: "WriteGlobalPwrPolicy", "PowerWriteDCValueIndex", "PowerReadACValueIndex" are all related to power management and could be unique. The presence of "NtQuerySystemInformation" is common, but its usage might be worth investigating further if more context were available. 
+
+Vendor Detection: The report indicates that several vendors (Avast, Bitdefender, etc.) have flagged this as undetected, which suggests it's relatively new or uses techniques to evade detection. This isn’t directly usable in a YARA rule but is helpful for understanding the threat landscape. 
+
+YARA Rule Draft: 
+
+Here's a draft YARA rule incorporating these observations. I've prioritized strings and imports that seem more distinctive. I'll explain the rationale after the code: 
+
+rule PotentialMalware_PowerManagement 
+{ 
+   meta: 
+       description = "Detects potential malware based on power management API usage" 
+       author = "Bard (based on PEStudio report)" 
+       date = "2023-10-27" 
+       version = "1.0" 
+ 
+   strings: 
+       $write_global_pwr_policy = "WriteGlobalPwrPolicy" nocase 
+       $power_write_dc_value_index = "PowerWriteDCValueIndex" nocase 
+       $power_read_ac_value_index = "PowerReadACValueIndex" nocase 
+ 
+   imports: 
+       // Focus on power management related imports.  Add more as needed based on further analysis. 
+       by_reference { 
+           kernel32.dll -> WriteFile 
+           kernel32.dll -> VirtualAlloc 
+           advapi32.dll -> RegSetValueEx 
+           powrprof.dll -> PowerWriteDCValueIndex 
+           powrprof.dll -> PowerReadACValueIndex 
+       } 
+ 
+   condition: 
+       $write_global_pwr_policy and $power_write_dc_value_index and $power_read_ac_value_index 
+} 
+ 
+
+Explanation: 
+
+rule PotentialMalware_PowerManagement: Defines the rule name. 
+
+meta:: Provides metadata about the rule (description, author, date, version). This is good practice for organization and documentation. 
+
+strings:: Defines strings to search for within the binary. I've used nocase to make the matching case-insensitive. These are key power management related strings from the PEStudio report. 
+
+imports:: Specifies DLLs and functions that must be imported by the malware. The by_reference modifier is important; it means we only care if these imports exist, not how they're used (which would require more complex analysis). I've included a few critical ones from the report. 
+
+condition:: Defines the conditions that must be met for the rule to trigger. In this case, all three strings and all specified imports must be present in the binary. 
+
+Important Considerations & Next Steps: 
+
+False Positives: This rule is a starting point. It's possible it could generate false positives if legitimate software uses similar power management APIs or contains these strings. Testing against known good samples is crucial. 
+
+Refinement: The imports section can be expanded to include other suspicious imports observed in the PEStudio report. 
+
+String Variations: Malware authors often obfuscate strings. Consider adding variations of the strings (e.g., using wildcards or regular expressions) if you suspect string manipulation. 
+
+Code Analysis: The best way to create a robust YARA rule is to perform dynamic analysis and understand how these APIs are being used within the malware's code. This would allow for more targeted rules based on specific behavior. 
+
+Section Characteristics: While not included in this initial rule, you could add conditions related to section sizes or virtual addresses if they consistently deviate from expected values. 
+
+To help me refine this further, can you tell me: 
+
+Do you have any information about the malware's functionality (e.g., what does it do)? 
+
+Are there any other strings or imports that seem particularly noteworthy? 
+
+ 
+
+Prompt 3: 
+
+Here are the other imports: (The next two screenshots were uploaded). 
+
+ 
+
+Answer 3: 
+
+Okay, thanks for providing the complete list of imports! This gives us a much better picture of the malware's behavior. 
+
+Analysis of Additional Imports: 
+
+Looking at these additional imports, several stand out as potentially interesting or indicative of certain behaviors: 
+
+GetSystemInfo: Frequently used in system reconnaissance and information gathering. 
+
+CreateFileW, WriteFile, ReadFile: File I/O operations are common for malware to read configuration files, write logs, or download additional payloads. 
+
+VirtualFree, VirtualAlloc: Memory management functions; could be used for code injection or other memory manipulation techniques. 
+
+LoadLibraryW, GetProcAddress: Dynamic loading of DLLs and function addresses – a common technique to evade detection by hiding malicious functionality. 
+
+RegCreateKeyExW, RegSetValueExW, RegDeleteValueW: Registry access functions; malware often uses the registry for persistence or configuration. 
+
+GetUserNameW: Retrieving user information, potentially for tracking or privilege escalation. 
+
+SetConsoleOutputCP: Changing console output code page - could be used to display messages in a specific encoding. 
+
+Revised YARA Rule (Incorporating More Imports): 
+
+Here's an updated YARA rule that includes some of these additional imports, along with the previous ones. I’ve tried to balance specificity and potential for false positives: 
+
+rule PotentialMalware_PowerManagement_Expanded 
+{ 
+   meta: 
+       description = "Detects potential malware based on power management API usage & system reconnaissance" 
+       author = "Bard (based on PEStudio report)" 
+       date = "2023-10-27" 
+       version = "2.0" 
+ 
+   strings: 
+       $write_global_pwr_policy = "WriteGlobalPwrPolicy" nocase 
+       $power_write_dc_value_index = "PowerWriteDCValueIndex" nocase 
+       $power_read_ac_value_index = "PowerReadACValueIndex" nocase 
+ 
+   imports: 
+       // Power Management Related 
+       by_reference { 
+           powrprof.dll -> PowerWriteDCValueIndex 
+           powrprof.dll -> PowerReadACValueIndex 
+       } 
+ 
+       // System Reconnaissance & File I/O 
+       by_reference { 
+           kernel32.dll -> GetSystemInfo 
+           kernel32.dll -> CreateFileW 
+           kernel32.dll -> WriteFile 
+           kernel32.dll -> ReadFile 
+           kernel32.dll -> VirtualAlloc 
+           kernel32.dll -> VirtualFree 
+       } 
+ 
+       // Dynamic Loading & Registry Access 
+       by_reference { 
+           kernel32.dll -> LoadLibraryW 
+           kernel32.dll -> GetProcAddress 
+           advapi32.dll -> RegCreateKeyExW 
+           advapi32.dll -> RegSetValueExW 
+           advapi32.dll -> RegDeleteValueW 
+       } 
+ 
+   condition: 
+       ($write_global_pwr_policy and $power_write_dc_value_index and $power_read_ac_value_index) or 
+       (all of (imports)) // Trigger if any combination of the above is present.  Adjust as needed. 
+} 
+ 
+
+Changes & Explanation: 
+
+rule PotentialMalware_PowerManagement_Expanded: New rule name to reflect expanded scope. 
+
+Combined Condition: I've changed the condition to be more flexible. It now triggers if either: 
+
+All three power management strings and imports are present (the original condition). 
+
+Any of the listed imports are present. This is a broader trigger, but it increases the chance of detecting malware that might not use all the power management functions directly. 
+
+Important Notes & Further Refinement: 
+
+False Positive Risk: The expanded condition significantly increases the risk of false positives. Many legitimate programs will import some or all of these functions. 
+
+Prioritization: You should carefully consider which imports are most indicative of malicious behavior in your specific context. Remove less critical ones to reduce false positives. 
+
+Import Usage Analysis: Ideally, you would analyze how these imported functions are actually used within the malware's code. This could reveal more specific patterns that can be incorporated into the YARA rule (e.g., specific arguments passed to CreateFileW). 
+
+String Context: Consider adding context around the strings. For example, if $write_global_pwr_policy is always followed by a call to WriteFile, you could add that as a condition. 
+
+To help me further refine this rule, can you tell me: 
+
+What is the intended use case for this YARA rule? (e.g., screening new files, analyzing suspicious processes) 
+
+Are there any specific behaviors or characteristics of this malware that you know about? 
+
+ 
+
+Prompt 4:  
+
+Here are the other strings: (The last four screenshots were uploaded). 
+
+ 
+
+ 
+
+Answer 4: 
+
+Okay, thanks for providing those additional strings! This gives us a much richer set of potential indicators. Let's analyze them and refine the YARA rule further. 
+
+Analysis of New Strings: 
+
+Here's a breakdown of some notable strings from your provided images, grouped by category: 
+
+Error/Debug Messages (Likely Noise): Many of these are generic error messages or debugging information ("Attempt to use MSIL code," "Application has made an attempt to load the CLR runtime library incorrectly", etc.). These are likely noise and shouldn't be directly used in a YARA rule unless they appear consistently with other malicious indicators. 
+
+Strings Related to System Interaction: These are more interesting: 
+
+UnhandledExceptionFilter: A common technique for malware to intercept exceptions and potentially hide its actions. 
+
+GetSystemTimeFileTime, QueryPerformanceCounter: Used for timing or measuring performance, which could be related to malicious activities (e.g., delaying execution). 
+
+SetConsoleAttribute, SetConsoleOutputCP: Manipulating the console output – potentially used to display messages in a specific encoding or hide information. 
+
+CreateFileW, WriteFile, ReadFile: File I/O operations, as mentioned before. 
+
+RegCreateKeyExW, RegSetValueExW, RegDeleteValueW: Registry manipulation – persistence and configuration. 
+
+LoadLibraryW, GetProcAddress: Dynamic loading of DLLs - a common evasion technique. 
+
+Strings Related to Windows API: Many strings are function names from the Windows API (e.g., ExitProcess, TerminateProcess, CreateFileW). These are not inherently malicious, but their combination and usage can be indicative of malicious behavior. 
+
+Strings with Potential Significance: 
+
+Suiche Matthieu Baptiste 1: This is a very unusual string. It's highly likely to be related to the specific malware sample you're analyzing. This should be prioritized for inclusion in your YARA rule. 
+
+RtDosPathNameToNtPathName, U: Another potentially unique identifier. 
+
+170127100002C1: This looks like a timestamp or version number – could be specific to the malware. 
+
+Revised YARA Rule (Incorporating New Strings and Refinements): 
+
+Here's an updated rule that incorporates these findings, with explanations for each change: 
+
+rule PotentialMalware_PowerManagement_Expanded_v2 
+{ 
+   meta: 
+       description = "Detects potential malware based on power management API usage & system reconnaissance" 
+       author = "Bard (based on PEStudio report)" 
+       date = "2023-10-27" 
+       version = "3.0" 
+ 
+   strings: 
+       $write_global_pwr_policy = "WriteGlobalPwrPolicy" nocase 
+       $power_write_dc_value_index = "PowerWriteDCValueIndex" nocase 
+       $power_read_ac_value_index = "PowerReadACValueIndex" nocase 
+       $suiche_matthieu = "Suiche Matthieu Baptiste 1" // Prioritized unique string 
+       $rtdos_path = "RtDosPathNameToNtPathName, U"  // Another potential unique identifier 
+       $timestamp = "170127100002C1" // Potential timestamp/version 
+ 
+   imports: 
+       // Power Management Related (Keep these as they are core indicators) 
+       by_reference { 
+           powrprof.dll -> PowerWriteDCValueIndex 
+           powrprof.dll -> PowerReadACValueIndex 
+       } 
+ 
+       // System Reconnaissance & File I/O (Reduce the scope to focus on key functions) 
+       by_reference { 
+           kernel32.dll -> CreateFileW 
+           kernel32.dll -> WriteFile 
+           kernel32.dll -> ReadFile 
+           kernel32.dll -> VirtualAlloc 
+           kernel32.dll -> VirtualFree 
+       } 
+ 
+       // Dynamic Loading & Registry Access (Keep these as they are common evasion techniques) 
+       by_reference { 
+           kernel32.dll -> LoadLibraryW 
+           kernel32.dll -> GetProcAddress 
+           advapi32.dll -> RegCreateKeyExW 
+           advapi32.dll -> RegSetValueExW 
+           advapi32.dll -> RegDeleteValueW 
+       } 
+ 
+       // Exception Handling (Add this as a potential indicator) 
+       by_reference { 
+           kernel32.dll -> UnhandledExceptionFilter 
+       } 
+ 
+ 
+   condition: 
+       (all of ($write_global_pwr_policy, $power_write_dc_value_index, $power_read_ac_value_index)) or 
+       ($suiche_matthieu) or // Prioritize this unique string 
+       ($rtdos_path) or  // Also prioritize this unique string 
+       ($timestamp) or   // Check for the timestamp as well. 
+       (all of (imports)) // Trigger if any combination of the above is present. Adjust as needed. 
+} 
+ 
+
+Key Changes and Explanations: 
+
+Prioritized Unique Strings: I've added $suiche_matthieu, $rtdos_path and $timestamp as strings to search for, and prioritized them in the condition. If these are present, the rule will trigger even if other imports are not. 
+
+Reduced Scope of Imports: I’ve slightly reduced the number of imported functions included in the imports section to reduce false positives. You can adjust this based on your analysis. 
+
+Added UnhandledExceptionFilter: Included UnhandledExceptionFilter as a potential indicator, given its common use by malware. 
+
+Next Steps & Recommendations: 
+
+Test Thoroughly: Test this rule against known goodware to ensure it doesn't generate false positives. 
+
+Analyze Context: If the rule triggers, carefully analyze the context in which these strings and functions are used. This will help you understand what the malware is doing and refine the YARA rule further. 
+
+Consider File Structure: Analyze the file structure of the malware sample (e.g., sections, imports, exports). This can reveal additional indicators that aren't visible from just the strings. 
+
+Behavioral Analysis: Run the malware in a sandbox environment and observe its behavior. This will provide valuable insights into its functionality and help you identify more specific YARA rules. 
+
+Let me know if you have any other questions or want to explore further refinements! 
