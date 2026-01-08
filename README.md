@@ -39,7 +39,7 @@ All AI-assisted results were manually reviewed and validated.
 
 **Repository Structure**
 
-.
+
 ├── README.md\
 ├── logs/\
 │   └── volatility_results.txt\
@@ -57,16 +57,16 @@ All AI-assisted results were manually reviewed and validated.
 
 The analysis followed a structured forensic workflow:
 
-1. Identification of the correct memory profile\
-2. Enumeration of running processes and system artifacts\
-3. Detection of anomalies such as:\
+1. Identification of the correct memory profile
+2. Enumeration of running processes and system artifacts
+3. Detection of anomalies such as:
 Unusual process names\
 Suspicious parent-child relationships\
-Hidden or terminated processes\
-4. Extraction of suspicious binaries from memory\
-5. Static malware analysis using PEStudio\
-6. Identification of indicators of compromise\
-7. Creation of YARA rules based on verified indicators\
+Hidden or terminated processes
+4. Extraction of suspicious binaries from memory
+5. Static malware analysis using PEStudio
+6. Identification of indicators of compromise
+7. Creation of YARA rules based on verified indicators
 8. Documentation of findings and analysis steps
 
 **Analysis & Findings**
@@ -131,4 +131,5 @@ All analysis was performed on pre-provided lab material in a controlled environm
 No real-world systems or personal data were involved.
 
 **Conclusion**
+
 This project demonstrates a complete memory forensics workflow, from process analysis to malware detection rule creation. It highlights the importance of structured methodology, careful validation, and transparency when using AI-assisted tools in security-related investigations.
