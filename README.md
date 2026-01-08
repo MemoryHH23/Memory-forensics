@@ -59,7 +59,7 @@ The analysis followed a structured forensic workflow:
 
 1. Identification of the correct memory profile
 2. Enumeration of running processes and system artifacts
-3. Detection of anomalies such as:
+3. Detection of anomalies such as:\
 Unusual process names\
 Suspicious parent-child relationships\
 Hidden or terminated processes
