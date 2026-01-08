@@ -112,7 +112,7 @@ All AI-generated output was treated as untrusted\
 Manual verification was performed for all findings
 
 Prompts and outputs are documented in:\
-prompts/llm_yara_prompts.txt
+prompts/AI_prompts.txt
 
 This ensures reproducibility and compliance with course requirements.
 
