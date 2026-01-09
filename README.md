@@ -286,8 +286,8 @@ This project demonstrates a complete memory forensics workflow, from process ana
 
 **References**
 
-Digital Corpora. (2009, 5 december). jo-2009-12-05.winddramimage.zip [RAM-bild]. 
-https://digitalcorpora.s3.amazonaws.com/corpora/scenarios/2009-m57-patents/ram/jo-2009-12-05.winddramimage.zip
+Digital Corpora. (2009). 2009 M57 Patents – RAM images. 
+https://digitalcorpora.s3.amazonaws.com/s3_browser.html#corpora/scenarios/2009-m57-patents/ram/
 
 Digital Corpora. (u.å.). Digital Corpora. 
 https://digitalcorpora.org/
