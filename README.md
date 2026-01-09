@@ -46,9 +46,6 @@ All AI-assisted results were manually reviewed and validated.
 │   └── volatility_results.txt\
 ├── prompts/\
 │   └── AI_prompts.txt\
-├── rules/\
-│   └── malware_detection.yar\
-├── screenshots/\
 │   ├── Screenshot 2025-12-16 102406.png\
 │   ├── Screenshot 2025-12-16 103140.png\
 │   ├── Screenshot 2025-12-16 103342.png\
@@ -60,7 +57,10 @@ All AI-assisted results were manually reviewed and validated.
 │   ├── Screenshot 2025-12-18 140630.png\
 │   ├── Screenshot 2025-12-18 141153.png\
 │   ├── Screenshot 2025-12-18 141434.png\
-│   └── Screenshot 2025-12-18 141614.png
+│   └── Screenshot 2025-12-18 141614.png\
+├── rules/\
+│   └── malware_detection.yar
+
 
 **Installation & Environment**
 
