@@ -283,3 +283,20 @@ No real-world systems or personal data were involved.
 **Conclusion**
 
 This project demonstrates a complete memory forensics workflow, from process analysis to malware detection rule creation. It highlights the importance of structured methodology, careful validation, and transparency when using AI-assisted tools in security-related investigations.
+
+**References**
+
+Digital Corpora. (2009, 5 december). jo-2009-12-05.winddramimage.zip [RAM-bild]. 
+https://digitalcorpora.s3.amazonaws.com/corpora/scenarios/2009-m57-patents/ram/jo-2009-12-05.winddramimage.zip
+
+Digital Corpora. (u.å.). Digital Corpora. 
+https://digitalcorpora.org/
+
+LMStudio.ai. (u.å.). LM Studio. 
+https://lmstudio.ai/
+
+Volatility Foundation. (u.å.). Volatility Framework documentation. 
+https://volatilityfoundation.org/
+
+Winitor. (u.å.). PEStudio documentation. 
+https://www.winitor.com/
