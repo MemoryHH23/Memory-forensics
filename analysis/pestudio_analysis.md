@@ -26,6 +26,7 @@ The indicators summary in PEStudio shows general information about the file, inc
 <img width="506" height="860" alt="image" src="https://github.com/user-attachments/assets/2ac9456f-267f-4d8c-86e6-852f69947a6a" />
 
 This screenshot shows additional readable strings containing DLL names and common Windows API functions such as file handling, registry access, and console operations. All of these strings are standard for Windows applications and do not directly indicate malicious behavior. However, the presence of many low-level system and registry-related strings shows that the program has wide access to system resources, which should be noted.
+
 <img width="510" height="863" alt="image" src="https://github.com/user-attachments/assets/71e97b0b-11e2-4aac-924d-2dbe0931f8b6" />
 
 
