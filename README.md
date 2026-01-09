@@ -45,7 +45,7 @@ All AI-assisted results were manually reviewed and validated.
 ├── logs/\
 │   └── volatility_results.txt\
 ├── prompts/\
-│   └── AI_prompts.md\
+│   └── AI_prompts.txt\
 ├── rules/\
 │   └── malware_detection.yar\
 ├── screenshots/\
