@@ -1,6 +1,8 @@
 This report presents a static analysis of a Windows executable using PEStudio. The purpose of the analysis was to identify structural properties, imported functions, and readable strings in order to assess potential security risks. Due to limitations in the free version of PEStudio, screenshots were used to document the findings. The analysis focuses on file properties, VirusTotal results, sections, imports, and strings. Overall, the file does not show clear signs of malware, but some elements reduce its trustworthiness and justify further investigation.
 
 TEXT TO Screenshot 2025-12-16 102406.png located in prompts
+<img width="1223" height="546" alt="image" src="https://github.com/user-attachments/assets/3b56dd0c-dee0-4920-9298-a38198a4bd6c" />
+
 In PEStudio, the file is identified as a 32-bit Windows console executable compiled with Visual Studio 2008. The compilation date is from 2009, which means the file is quite old. The file does not contain any version or description information, which makes it harder to identify its origin. PEStudio also shows that the digital certificate is invalid and that an unknown overlay is present. These are not direct signs of malware, but they reduce trust in the file.
 
 TEXT TO screenshot Screenshot 2025-12-16 103140.png located in prompts
