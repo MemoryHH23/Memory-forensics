@@ -52,6 +52,156 @@ All AI-assisted results were manually reviewed and validated.
 
 **Installation & Environment**
 
+1. System Requirements
+
+Linux VM (tested on Kali Linux)
+
+Windows VM (for PEStudio)
+
+Python 3.9+ on Linux
+
+Internet access for installation only
+
+Internet disabled during analysis
+
+RAM dump file: jo-2009-12-05.winddramimage
+
+2. Linux VM – Tool Installation
+2.1 Update System
+sudo apt update && sudo apt upgrade -y
+
+2.2 Install System Dependencies
+sudo apt install -y \
+  python3 python3-pip python3-venv \
+  build-essential git libssl-dev \
+  yara libyara-dev yara-doc
+
+2.3 Create Forensic Working Directory
+mkdir -p ~/forensics-env/tools
+cd ~/forensics-env
+
+2.4 Create and Activate Python Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
+
+
+Confirm activation:
+
+(venv) user@linux:~/forensics-env $
+
+2.5 Install Volatility 3
+pip install volatility3
+
+
+Verify installation:
+
+vol -h
+
+2.6 Install YARA Python Bindings
+pip install yara-python
+
+
+Verify:
+
+python3 - << 'EOF'
+import yara
+print("YARA Python OK")
+EOF
+
+3. Windows VM – Tool Installation
+3.1 Install PEStudio
+
+Download PEStudio (portable ZIP)
+
+Extract to C:\Tools\PEStudio\
+
+No installation required
+
+3.2 Windows Safety Configuration
+
+Disable Windows Defender real-time protection
+
+Disable SmartScreen
+
+Disable internet connection
+
+These steps prevent interference with malware samples during static analysis.
+
+4. Workspace Setup (Linux VM)
+mkdir -p ~/forensics-env/workspace/{memory,logs,extracted}
+cd ~/forensics-env/workspace
+
+
+Place the RAM dump in the memory directory:
+
+mv jo-2009-12-05.winddramimage memory/
+
+5. Memory Analysis (Volatility 3)
+5.1 Identify System Information
+vol -f memory/jo-2009-12-05.winddramimage windows.info
+
+5.2 Enumerate Processes
+vol -f memory/jo-2009-12-05.winddramimage windows.pslist
+vol -f memory/jo-2009-12-05.winddramimage windows.psscan
+vol -f memory/jo-2009-12-05.winddramimage windows.pstree
+
+
+Save output:
+
+vol -f memory/jo-2009-12-05.winddramimage windows.pslist > logs/pslist.txt
+vol -f memory/jo-2009-12-05.winddramimage windows.psscan > logs/psscan.txt
+
+5.3 Inspect Suspicious Process (PID 3708)
+vol -f memory/jo-2009-12-05.winddramimage windows.dlllist --pid 3708 > logs/dll_3708.txt
+vol -f memory/jo-2009-12-05.winddramimage windows.cmdline --pid 3708
+vol -f memory/jo-2009-12-05.winddramimage windows.envars --pid 3708
+
+5.4 Analyze Process Memory Layout
+vol -f memory/jo-2009-12-05.winddramimage windows.memmap --pid 3708 > logs/memmap_3708.txt
+
+5.5 Extract Executable Artifacts
+vol -f memory/jo-2009-12-05.winddramimage windows.dumpfiles --pid 3708 -D extracted/
+vol -f memory/jo-2009-12-05.winddramimage windows.memdump --pid 3708 -D extracted/
+
+6. Identify Extracted Files (Linux VM)
+file extracted/*
+strings extracted/* | less
+
+
+Identify valid Portable Executable (PE) files for further analysis.
+
+7. Transfer Files to Windows VM
+
+Transfer identified executables to the Windows VM using a shared folder or isolated disk.
+
+8. Static Analysis (PEStudio – Windows VM)
+
+Launch PEStudio
+
+Open the extracted executable
+
+Review:
+
+Indicators and severity
+
+Imports and suspicious API usage
+
+Embedded strings
+
+Section headers and permissions
+
+Resources and embedded payloads
+
+Document findings.
+
+9. Correlation and Documentation
+
+Correlate Volatility findings with PEStudio indicators and document all results, logs, and extracted artifacts.
+
+10. Completion
+
+Following these steps fully replicates the memory forensics and static malware analysis exercise using
+jo-2009-12-05.winddramimage.
 
 **Methodology**
 
