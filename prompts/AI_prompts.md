@@ -342,3 +342,13 @@ Consider File Structure: Analyze the file structure of the malware sample (e.g.,
 Behavioral Analysis: Run the malware in a sandbox environment and observe its behavior. This will provide valuable insights into its functionality and help you identify more specific YARA rules. 
 
 Let me know if you have any other questions or want to explore further refinements! 
+
+
+Prompts AI analysis PE Studio
+
+AI tools were used to help structure the report and improve the clarity of the written explanations in the PEstudio Analysis (Qwen2.5-VL). 
+Prompt 
+”I performed a static malware analysis using PEStudio and provided screenshots of the results. Explain what each screenshot shows in simple terms, focus on noteworthy or problematic findings, and then write an abstract and a conclusion suitable for a student report”
+(Then we sended each picture) To support the textstructure we also used ChatGPT 5.2 and wrote some of it of our own. 
+Prompt to ChatGPT 5.2 "Explain this in Swedish and provide the text in simple English"
+
