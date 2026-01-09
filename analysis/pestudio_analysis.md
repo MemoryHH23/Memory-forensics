@@ -49,10 +49,10 @@ The PEStudio analysis shows that the file is an older Windows executable compile
 
 AI
 
-AI tools were used to help structure the report and improve the clarity of the written explanations. 
+AI tools were used to help structure the report and improve the clarity of the written explanations (Qwen2.5-VL). 
 Prompt 
 ”I performed a static malware analysis using PEStudio and provided screenshots of the results. Explain what each screenshot shows in simple terms, focus on noteworthy or problematic findings, and then write an abstract and a conclusion suitable for a student report”
-(Then we sended each picture) To support the textstructure we also used ChatGPT and write some of it of our own.
+(Then we sended each picture) To support the textstructure we also used ChatGPT 5.2 and wrote some of it of our own.
 
 
 
