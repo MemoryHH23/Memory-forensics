@@ -262,6 +262,7 @@ PE file characteristics\
 Verified forensic indicators
 
 The rules are intended for educational and detection purposes in controlled environments.
+The final YARA rules are modified to match the syntax of a .yar file.
 
 **AI / LLM Usage Transparency**
 
