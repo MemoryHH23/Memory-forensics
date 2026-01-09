@@ -39,16 +39,28 @@ All AI-assisted results were manually reviewed and validated.
 
 **Repository Structure**
 
-
 ├── README.md\
+├── analysis/\
+│   └── pestudio_analysis.md\
 ├── logs/\
 │   └── volatility_results.txt\
+├── prompts/\
+│   └── AI_prompts.md\
 ├── rules/\
 │   └── malware_detection.yar\
-├── prompts/\
-│   └── llm_yara_prompts.txt\
-└── extracted/\
-    └── suspicious_binary.exe
+├── screenshots/\
+│   ├── Screenshot 2025-12-16 102406.png\
+│   ├── Screenshot 2025-12-16 103140.png\
+│   ├── Screenshot 2025-12-16 103342.png\
+│   ├── Screenshot 2025-12-16 103906.png\
+│   ├── Screenshot 2025-12-16 104204.png\
+│   ├── Screenshot 2025-12-16 105319.png\
+│   ├── Screenshot 2025-12-18 125403.png\
+│   ├── Screenshot 2025-12-18 125445.png\
+│   ├── Screenshot 2025-12-18 140630.png\
+│   ├── Screenshot 2025-12-18 141153.png\
+│   ├── Screenshot 2025-12-18 141434.png\
+│   └── Screenshot 2025-12-18 141614.png
 
 **Installation & Environment**
 
