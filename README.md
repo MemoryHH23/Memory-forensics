@@ -233,22 +233,26 @@ Hidden or terminated processes
 
 **Analysis & Findings**
 
-The memory analysis revealed one or more suspicious processes exhibiting abnormal characteristics. Indicators observed during analysis included:\
-Unexpected process behavior\
-Suspicious memory regions\
-Abnormal imports and strings within extracted binaries
+The static analysis found some suspicious elements, but no clear proof of malware. The investigation focused on file structure, imported functions, and readable strings. No memory or runtime analysis was performed.
 
-Static analysis of extracted files indicated characteristics commonly associated with malicious software. Detailed logs and artifacts are available in the repository.
+Several Windows API functions related to memory handling, process control, privilege changes, service management, and network communication were identified. These functions are legitimate, but together they give the program a high level of control over the system, which can be considered suspicious.
+
+Some readable strings were related to debugging checks, system operations, and service management. These strings are not malicious by themselves, but they suggest awareness of analysis environments and access to sensitive system functions.
+
 
 **Indicators of Compromise (IoCs)**
 
-The following types of IoCs were identified during the investigation:\
-Suspicious process names\
-Unique strings found within extracted binaries\
-Abnormal imported functions\
-Indicators of packing or obfuscation
+Based on the static analysis, no confirmed Indicators of Compromise were identified. However, some elements were considered suspicious and worth noting:
 
-These indicators were used as the basis for YARA rule development.
+Extensive use of system-level Windows API functions
+
+Strings related to debugging and process control
+
+Invalid digital certificate
+
+Unknown overlay and missing program information
+
+These indicators do not prove malicious behavior on their own, but they reduce trust in the file.
 
 **YARA Rules**
 
