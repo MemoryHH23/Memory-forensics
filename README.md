@@ -306,9 +306,6 @@ This project demonstrates a complete memory forensics workflow, from process ana
 Digital Corpora. (2009). 2009 M57 Patents – RAM images. 
 https://digitalcorpora.s3.amazonaws.com/s3_browser.html#corpora/scenarios/2009-m57-patents/ram/
 
-Digital Corpora. (u.å.). Digital Corpora. 
-https://digitalcorpora.org/
-
 LMStudio.ai. (u.å.). LM Studio. 
 https://lmstudio.ai/
 
