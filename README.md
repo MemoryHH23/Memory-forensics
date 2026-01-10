@@ -149,24 +149,38 @@ Place the RAM dump in the memory directory:
 mv jo-2009-12-05.winddramimage memory/
 
 5. Memory Analysis (Volatility 3)
+
 5.1 Identify System Information
+
 vol -f memory/jo-2009-12-05.winddramimage windows.info
 
+
 5.2 Enumerate Processes
+
 vol -f memory/jo-2009-12-05.winddramimage windows.pslist
+
 vol -f memory/jo-2009-12-05.winddramimage windows.psscan
+
 vol -f memory/jo-2009-12-05.winddramimage windows.pstree
 
 
 Save output:
 
 vol -f memory/jo-2009-12-05.winddramimage windows.pslist > logs/pslist.txt
+
 vol -f memory/jo-2009-12-05.winddramimage windows.psscan > logs/psscan.txt
 
+vol -f memory/jo-2009-12-05.winddramimage windows.pstree > logs/pstree.txt
+
+
 5.3 Inspect Suspicious Process (PID 3708)
+
 vol -f memory/jo-2009-12-05.winddramimage windows.dlllist --pid 3708 > logs/dll_3708.txt
+
 vol -f memory/jo-2009-12-05.winddramimage windows.cmdline --pid 3708
+
 vol -f memory/jo-2009-12-05.winddramimage windows.envars --pid 3708
+
 
 5.4 Analyze Process Memory Layout
 vol -f memory/jo-2009-12-05.winddramimage windows.memmap --pid 3708 > logs/memmap_3708.txt
